@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 using Parser;
 
 namespace LogParser
@@ -85,15 +85,14 @@ namespace LogParser
                     }
                 }
             }
-            //Criando strutura similar ao json
-            JavaScriptSerializer jss = new JavaScriptSerializer();
+            //Criando strutura similar ao json            
             //Mostra Game por Game
             for (int i = 0; i < games.Count; i++)
             {
-                string jsonStructure = jss.Serialize(games[i]);
+                string json = JsonConvert.SerializeObject(games[i], Formatting.Indented);  
                 string Game = "Game_" + i + ": \n";
-                Console.WriteLine(Game + jsonStructure + "\n");
-            }
+                Console.WriteLine(Game + json + "\n");
+            }            
 
             Console.WriteLine("###### Relatório Mortes por Partida? ######  \n s - exibir / n - sair");
 
@@ -169,7 +168,7 @@ namespace LogParser
                 {
                     game.TotalKills += 1;
 
-                    string[] killed = line.Substring(line.IndexOf("killed ")).Split(' ');//line.Split('b', 'y', ' ')[10];
+                    string[] killed = line.Substring(line.IndexOf("killed ")).Split(' ');
                     string kil = String.Empty;
                     switch (killed.Length)
                     {
@@ -202,13 +201,12 @@ namespace LogParser
                 }
             }
 
-            JavaScriptSerializer jss = new JavaScriptSerializer();
             for (int i = 0; i < games.Count; i++)
             {
-                string jsonStructure = jss.Serialize(games[i]);
+                string json = JsonConvert.SerializeObject(games[i], Formatting.Indented);            
                 var Game = "Game_" + i + ": \n";
-                Console.WriteLine(Game + jsonStructure + "\n");
-            }
+                Console.WriteLine(Game + json + "\n");
+            }           
         }
     }
 }
